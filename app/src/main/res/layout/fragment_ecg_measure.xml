@@ -1,0 +1,40 @@
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/mainbg"
+    android:orientation="vertical"
+    tools:context="com.returnlive.healthinspectioninstrument.fragment.measure.EcgMeasureFragment">
+
+
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/px40"
+        android:paddingRight="@dimen/px40"
+        android:paddingBottom="@dimen/px10">
+
+        <com.zhy.autolayout.AutoFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <com.returnlive.healthinspectioninstrument.view.EcgBackGroundView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.returnlive.healthinspectioninstrument.view.EcgPathView
+                android:id="@+id/ecg_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layerType="software"/>
+
+        </com.zhy.autolayout.AutoFrameLayout>
+
+        <include layout="@layout/ecg_data_layout" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoLinearLayout>

@@ -1,0 +1,108 @@
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/mainbg">
+
+    <TextView android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:text="血氧"
+        android:textSize="@dimen/px60"
+        android:layout_marginTop="@dimen/px150"/>
+
+    <com.returnlive.healthinspectioninstrument.view.ProgressView
+        android:id="@+id/progress_view_oxygen"
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px280"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/px20"
+        android:layout_below="@+id/tv_title"/>
+
+
+    <ImageView
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px280"
+        android:src="@mipmap/bg_round"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/px20"
+        android:layout_below="@+id/tv_title"/>
+
+    <TextView android:id="@+id/tv_oxygen_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0"
+        android:textColor="@color/white"
+        android:textSize="@dimen/px30"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/px140"
+        android:layout_below="@+id/tv_title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/px50"
+        android:text="%次"
+        android:layout_toRightOf="@+id/tv_title"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_marginLeft="@dimen/px20"/>
+
+
+
+    <Button android:id="@+id/btn_start_measure_oxygen"
+        android:layout_width="@dimen/px200"
+        android:layout_height="@dimen/px100"
+        android:text="开始"
+        android:textSize="@dimen/px32"
+        android:textColor="@color/white"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/px500"
+        android:background="@drawable/btn_blue_selector"/>
+
+
+    <TextView android:id="@+id/tv_oxygen_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/px30"
+        android:textColor="@color/progress_green"
+        android:gravity="center"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_marginTop="@dimen/px200"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/px30"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="人体血氧正常范围：95%~99%"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_marginTop="@dimen/px250"/>
+
+
+    <TextView android:id="@+id/tv_hr_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/px30"
+        android:textColor="@color/progress_green"
+        android:gravity="center"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_marginTop="@dimen/px300"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/px30"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="人体心率正常范围：60.00~100.00次"
+        android:layout_below="@+id/tv_oxygen_data"
+        android:layout_marginTop="@dimen/px350"/>
+
+
+
+</com.zhy.autolayout.AutoRelativeLayout>

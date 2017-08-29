@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/mainbg"
+    tools:context="com.returnlive.healthinspectioninstrument.activity.MeasureActivity">
+
+    <TextView
+        android:id="@+id/toolbar"
+        android:layout_width="@dimen/px160"
+        android:layout_height="@dimen/px80"
+        android:textColor="@color/white"
+        android:drawableLeft="@drawable/ic_navigation_previous_item"
+        android:text="@string/back"
+        android:paddingLeft="@dimen/px10"
+        android:textSize="@dimen/px35"
+        android:gravity="center"
+        android:background="@drawable/sel_back"/>
+
+    <com.zhy.autolayout.AutoFrameLayout
+        android:id="@+id/lay_fragment_measure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

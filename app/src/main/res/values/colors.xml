@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="bg_bluetoach">#454545</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="bg_page">#F5F5F5</color>
+    <color name="text_default_color">#999999</color>
+    <color name="text_pressed_dark_white">#EEEEEE</color>
+    <color name="text_sel_dark_white">#BBBBBB</color>
+    <color name="text_pressed_blue">#2B8CD5</color>
+    <color name="text_pressed_bluetooth">#A1A1A1</color>
+    <color name="btn_blue_normal">#1e90ff</color>
+    <color name="btn_blue_pressed">#0066FF</color>
+    <color name="ecg_padding_bg">#444444</color>
+    <color name="blue_dark">#1ab3ff</color>
+    <color name="progress_orange">#F7B759</color>
+    <color name="progress_yellow">#F8F45E</color>
+    <color name="progress_green">#ABFE28</color>
+    <color name="progress_red">#FF0000</color>
+    <color name="line_view">#DBDBDB</color>
+
+
+</resources>

@@ -1,0 +1,160 @@
+<com.zhy.autolayout.AutoFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.returnlive.healthinspectioninstrument.fragment.menu.HomePageFragment">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@color/bg_bluetoach"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/px20">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/px10"
+                    android:layout_marginTop="@dimen/px20"
+                    android:src="@drawable/health_equipment" />
+
+                <TextView
+                    style="@style/main_text_bg_style"
+                    android:text="@string/multi_functional_health_detector" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@color/bg_bluetoach">
+                <View
+                    android:layout_width="@dimen/px01"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/px20"
+                    android:layout_marginTop="@dimen/px20"
+                    android:background="@color/white" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:id="@+id/lay_connect_bluetooth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center"
+                android:background="@drawable/sel_text_bluetooth_connect"
+                android:orientation="vertical">
+
+
+                <TextView android:id="@+id/tv_bluetooth_connect"
+                    android:layout_width="@dimen/px220"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/bluetooth"
+                    android:gravity="center"
+                    android:text="@string/click_connect"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/px30" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/px05"
+            android:layout_weight="1"
+            android:background="@color/bg_page"
+            android:orientation="horizontal">
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/lay_ecg"
+                    style="@style/lay_page_sel_style"
+                    android:layout_marginBottom="@dimen/px05"
+                    android:layout_marginRight="@dimen/px05">
+
+                    <TextView
+                        style="@style/text_sel_style"
+                        android:drawableTop="@drawable/ecg"
+                        android:text="@string/ecg" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/lay_blood_pressure"
+                    style="@style/lay_page_sel_style"
+                    android:layout_marginRight="@dimen/px05"
+                    android:layout_marginTop="@dimen/px05">
+
+                    <TextView
+                        style="@style/text_sel_style"
+                        android:drawableTop="@drawable/blood_pressure"
+                        android:text="@string/blood_pressure" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/lay_blood_oxygen"
+                    style="@style/lay_page_sel_style"
+                    android:layout_marginBottom="@dimen/px05"
+                    android:layout_marginLeft="@dimen/px05">
+
+                    <TextView
+                        style="@style/text_sel_style"
+                        android:drawableTop="@drawable/blood_oxygen"
+                        android:text="@string/blood_oxygen" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:id="@+id/lay_body_temperature"
+                    style="@style/lay_page_sel_style"
+                    android:layout_marginLeft="@dimen/px05"
+                    android:layout_marginTop="@dimen/px05">
+
+                    <TextView
+                        style="@style/text_sel_style"
+                        android:drawableTop="@drawable/body_temperature"
+                        android:text="@string/body_temperature" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+</com.zhy.autolayout.AutoFrameLayout>
