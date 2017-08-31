@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@mipmap/mainbg"
-    tools:context="com.returnlive.healthinspectioninstrument.activity.MeasureActivity">
+    tools:context="com.returnlive.healthinspectioninstrument.activity.DataDealActivity">
 
     <TextView
         android:id="@+id/toolbar"

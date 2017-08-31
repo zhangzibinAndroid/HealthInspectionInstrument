@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sel_ecg_item"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/px20"
+        android:paddingLeft="@dimen/px20"
+        android:paddingRight="@dimen/px20">
+
+        <TextView
+            android:id="@+id/tv_time_temp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/px20"
+            android:paddingTop="@dimen/px20"
+            android:text="2017/06/21 15:20:30"
+            android:textColor="@color/tv_time_color"
+            android:textSize="@dimen/px30" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_temp_data"
+                style="@style/text_ecg_data_history"
+                android:layout_weight="1"
+                android:text="体温：" />
+
+
+            <TextView
+                android:id="@+id/tv_temp_warning"
+                style="@style/text_ecg_data_history"
+                android:layout_weight="1"
+                android:text="体温偏低" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px30"
+        android:background="@color/bg_fragment" />
+
+</com.zhy.autolayout.AutoLinearLayout>

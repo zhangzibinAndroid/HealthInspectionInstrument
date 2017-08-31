@@ -3,7 +3,6 @@ package com.returnlive.healthinspectioninstrument.fragment.measure;
 
 import android.os.Bundle;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +48,7 @@ public class BloodPressureMeasureFragment extends BaseFragment {
         initView();
         return view;
     }
+
     private void initView() {
         tvDiastolicWarning.setVisibility(View.INVISIBLE);
         setBloodPressureDataCallBack(bloodPressureCall);
@@ -57,6 +57,11 @@ public class BloodPressureMeasureFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (bp_button_state == STOP) {
+            mHealthApi.stopBP();
+            bp_button_state = START;
+            btnStartMeasureTem.setText("开始");
+        }
         unbinder.unbind();
     }
 
@@ -83,11 +88,12 @@ public class BloodPressureMeasureFragment extends BaseFragment {
                     int diastolic = msg.arg2;//舒张压
                     bp_button_state = START;
                     btnStartMeasureTem.setText("开始");
-                    tvSystolicWarning.setText("收缩压: "+systolic+"mmHg");
+                    tvSystolicWarning.setText("收缩压: " + systolic + "mmHg");
                     tvDiastolicWarning.setVisibility(View.VISIBLE);
-                    tvDiastolicWarning.setText("舒张压: "+diastolic+"mmHg");
-                    Log.e(TAG, "收缩压: "+systolic );
-                    Log.e(TAG, "舒张压: "+diastolic );
+                    tvDiastolicWarning.setText("舒张压: " + diastolic + "mmHg");
+                    final long timeData = System.currentTimeMillis();
+                    String time = timeData + "";
+                    dbManager.addBloodPreMessage(time, systolic + "", diastolic + "");
                     break;
                 case Bp_task.LOUQI:
                     tvDiastolicWarning.setVisibility(View.INVISIBLE);

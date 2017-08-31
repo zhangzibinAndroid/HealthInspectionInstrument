@@ -17,12 +17,14 @@ import java.util.ArrayList;
 
 public class EcgPathView extends EcgBackGroundView {
     private static final String TAG = "PathView";
+    private Context context;
 
     public ArrayList<Integer> arrast = new ArrayList();
     float tmp = 0;
 
     public EcgPathView(Context context) {
         super(context);
+        this.context = context;
         mPaint = new Paint();
         mPath = new Path();
 
@@ -39,8 +41,9 @@ public class EcgPathView extends EcgBackGroundView {
 
     public void addDATA(int data) {
         arrast.add(data);
-
     }
+
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -58,6 +61,10 @@ public class EcgPathView extends EcgBackGroundView {
             tmp = getWidthes();
             mPath.lineTo(tmp, endY);
             mPath.moveTo(tmp, endY);
+        }else {
+            initPath();
+            invalidate();
+            endY = 0;
         }
         canvas.drawPath(mPath, mPaint);
         scrollTo((int) tmp,0);
@@ -78,10 +85,11 @@ public class EcgPathView extends EcgBackGroundView {
 
 
 
-    public void initPaint(){
+    //初始化画布
+    public void initPath(){
         mPaint = new Paint();
+        mPath = new Path();
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(mLineColor);
     }
-
 }

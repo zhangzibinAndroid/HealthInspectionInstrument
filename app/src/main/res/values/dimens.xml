@@ -101,5 +101,7 @@
     <dimen name="px740">740px</dimen>
     <dimen name="px1000">1000px</dimen>
     <dimen name="px1100">1100px</dimen>
+    <dimen name="px2000">2000px</dimen>
+    <dimen name="px5000">5000px</dimen>
 
 </resources>

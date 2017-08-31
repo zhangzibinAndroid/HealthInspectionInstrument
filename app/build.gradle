@@ -36,13 +36,12 @@ dependencies {
     // design 实现主页面的侧滑页面(提供TabeLyout、NavigationView和DrawerLayout第三方库)
     compile files('libs/health_sdk_1_3.jar')
     compile files('libs/libTGECG.jar')
-
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.jakewharton:butterknife:8.7.0'
     compile 'com.jakewharton:butterknife-compiler:8.7.0'
     compile 'com.zhy:autolayout:1.4.5'
-    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.code.gson:gson:2.8.1'
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'

@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.linktop.whealthService.OnBLEService;
 import com.returnlive.healthinspectioninstrument.R;
+import com.returnlive.healthinspectioninstrument.activity.DataDealActivity;
 import com.returnlive.healthinspectioninstrument.activity.DeviceList;
-import com.returnlive.healthinspectioninstrument.activity.MeasureActivity;
 import com.returnlive.healthinspectioninstrument.base.BaseFragment;
 import com.returnlive.healthinspectioninstrument.bean.EventMessage;
 
@@ -83,7 +83,7 @@ public class HomePageFragment extends BaseFragment {
             case R.id.lay_ecg:
                 if (isConnect) {
                     EventBus.getDefault().postSticky(new EventMessage("ecg"));
-                    JumpActivity(MeasureActivity.class);
+                    JumpActivity(DataDealActivity.class);
                 } else {
                     Toast.makeText(getActivity(), "请先连接蓝牙", Toast.LENGTH_SHORT).show();
                 }
@@ -91,7 +91,7 @@ public class HomePageFragment extends BaseFragment {
             case R.id.lay_blood_pressure:
                 if (isConnect) {
                     EventBus.getDefault().postSticky(new EventMessage("blood_pressure"));
-                    JumpActivity(MeasureActivity.class);
+                    JumpActivity(DataDealActivity.class);
                 } else {
                     Toast.makeText(getActivity(), "请先连接蓝牙", Toast.LENGTH_SHORT).show();
                 }
@@ -99,7 +99,7 @@ public class HomePageFragment extends BaseFragment {
             case R.id.lay_blood_oxygen:
                 if (isConnect) {
                     EventBus.getDefault().postSticky(new EventMessage("blood_oxygen"));
-                    JumpActivity(MeasureActivity.class);
+                    JumpActivity(DataDealActivity.class);
                 } else {
                     Toast.makeText(getActivity(), "请先连接蓝牙", Toast.LENGTH_SHORT).show();
                 }
@@ -107,7 +107,7 @@ public class HomePageFragment extends BaseFragment {
             case R.id.lay_body_temperature:
                 if (isConnect) {
                     EventBus.getDefault().postSticky(new EventMessage("body_temperature"));
-                    JumpActivity(MeasureActivity.class);
+                    JumpActivity(DataDealActivity.class);
                 } else {
                     Toast.makeText(getActivity(), "请先连接蓝牙", Toast.LENGTH_SHORT).show();
                 }

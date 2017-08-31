@@ -61,32 +61,49 @@ public class EcgMeasureFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (ecg_button_state == STOP) {
+            mHealthApi.ecgStop();
+            ecg_button_state = START;
+            btnStartMeasure.setText("开始");
+        }
         unbinder.unbind();
+
     }
 
     @OnClick(R.id.btn_start_measure)
     public void onViewClicked() {
-            if (ecg_button_state == START) {
-                ecgView.getArrast().clear();
-                mHealthApi.ecgStart();
-                ecg_button_state = STOP;
-                btnStartMeasure.setText("停止");
-            } else {
-                mHealthApi.ecgStop();
-                ecg_button_state = START;
-                btnStartMeasure.setText("开始");
-            }
+        if (ecg_button_state == START) {
+            ecgView.getArrast().clear();
+            mHealthApi.ecgStart();
+            ecg_button_state = STOP;
+            btnStartMeasure.setText("停止");
+            tvHeartRate.setText("心率：");
+            tvRrMax.setText("RR最大值：");
+            tvRrMin.setText("RR最小值：");
+            tvHeartRateVariability.setText("心率变异性：");
+            tvMood.setText("心情：");
+            tvBreathingRate.setText("呼吸率：");
+        } else {
+            mHealthApi.ecgStop();
+            ecg_button_state = START;
+            btnStartMeasure.setText("开始");
+        }
     }
 
 
-   private EcgCallBack ecgCallBack = new EcgCallBack() {
+    private EcgCallBack ecgCallBack = new EcgCallBack() {
         @Override
         public void ecgCall(int[] data) {
             switch (data[0]) {
                 case HealthApi.ECG_DATA:
-                    mWidth = (float) (mWidth + 0.5);
+                    if (ecgView.getArrast().size() != 0) {
+                        mWidth = (float) (mWidth + 0.5);
+                    } else {
+                        mWidth = 0;
+                    }
                     ecgView.setWidthes(mWidth);
                     ecgView.addDATA(data[1]);
+
                     break;
                 case HealthApi.ECG_HEARTRATE:
                     final int avg_hr = (Integer) data[1];
@@ -103,7 +120,7 @@ public class EcgMeasureFragment extends BaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvRrMax.setText("RR最大值："+rrmaxint);
+                            tvRrMax.setText("RR最大值：" + rrmaxint);
                         }
                     });
                     break;
@@ -146,6 +163,16 @@ public class EcgMeasureFragment extends BaseFragment {
                     break;
                 case HealthApi.ECG_END:
                     ecg_button_state = START;
+                    final long timeData = System.currentTimeMillis();
+                    String time = timeData + "";
+                    String jsonData = gson.toJson(ecgView.getArrast());
+                    String hr = tvHeartRate.getText().toString();
+                    String rr_max = tvRrMax.getText().toString();
+                    String rr_min = tvRrMin.getText().toString();
+                    String hrv = tvHeartRateVariability.getText().toString();
+                    String moods = tvMood.getText().toString();
+                    String brs = tvBreathingRate.getText().toString();
+                    dbManager.addEcgMessage(time, jsonData, hr, rr_max, rr_min, hrv, moods, brs);
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -159,4 +186,5 @@ public class EcgMeasureFragment extends BaseFragment {
             }
         }
     };
+
 }

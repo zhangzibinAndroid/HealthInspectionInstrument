@@ -11,10 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.linktop.whealthService.HealthApi;
 import com.linktop.whealthService.task.BT_task;
 import com.linktop.whealthService.task.Bs_task;
 import com.linktop.whealthService.task.battery_task;
+import com.returnlive.healthinspectioninstrument.db.DBManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,6 +48,8 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
     protected boolean bs_modual_exist;
     protected static final int REQUEST_BLUETOOTH_DEVICE = 0;
     protected static final int REQUEST_OPEN_BT = 2;
+    protected DBManager dbManager;
+    protected Gson gson;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
     }
 
     private void initViews() {
+        dbManager = new DBManager(getActivity());
+        gson = new Gson();
         mHealthApi = new HealthApi();
         mHealthApi.init(getActivity(), this, mbpHandler, mbtHandler, moxHandler, mbsHandler, this);
         mHealthApi.setBleCallBack(this);
@@ -65,7 +71,7 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
             switch (msg.what) {
                 case BT_task.BT_RESULT:
                     double result = msg.getData().getDouble("BodyTempResult");
-                    tmepCallBack.getTmepCallBack(String.format("%.1f", result),result);
+                    tmepCallBack.getTmepCallBack(String.format("%.1f", result), result);
                     bt_button_state = START;
                     break;
 
@@ -199,19 +205,24 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
 
 
     private void setBatteryUi(byte[] battery) {
-
-        switch (battery[0]) {
-            case battery_task.BATTERY_QUERY:
-                Toast.makeText(getActivity(), "设备电量剩余" + battery[1] + "%", Toast.LENGTH_SHORT).show();
-                break;
-            case battery_task.BATTERY_CHARING:
-                Toast.makeText(getActivity(), "设备正在充电...", Toast.LENGTH_SHORT).show();
-                break;
-            case battery_task.BATTERY_FULL:
-                Toast.makeText(getActivity(), "充电完成", Toast.LENGTH_SHORT).show();
-            default:
-                break;
+        try {
+            switch (battery[0]) {
+                case battery_task.BATTERY_QUERY:
+                    Toast.makeText(getActivity(), "设备电量剩余" + battery[1] + "%", Toast.LENGTH_SHORT).show();
+                    break;
+                case battery_task.BATTERY_CHARING:
+                    Toast.makeText(getActivity(), "设备正在充电...", Toast.LENGTH_SHORT).show();
+                    break;
+                case battery_task.BATTERY_FULL:
+                    Toast.makeText(getActivity(), "充电完成", Toast.LENGTH_SHORT).show();
+                default:
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "setBatteryUiException: " + e.getMessage());
         }
+
+
     }
 
     @Override
@@ -222,9 +233,11 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
     }
 
     private void setBleUiState(int mState) {
-        bleUiStateCallBack.BleUiStateCall(mState);
-
-
+        try {
+            bleUiStateCallBack.BleUiStateCall(mState);
+        }catch (Exception e){
+            Log.e(TAG, "setBleUiState: "+e.getMessage() );
+        }
     }
 
 
@@ -249,11 +262,11 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
 
     protected BleUiStateCallBack bleUiStateCallBack;
 
-    protected static interface BleUiStateCallBack{
+    protected static interface BleUiStateCallBack {
         void BleUiStateCall(int mState);
     }
 
-    protected void setBleUiStateCallBack(BleUiStateCallBack bleUiStateCallBack){
+    protected void setBleUiStateCallBack(BleUiStateCallBack bleUiStateCallBack) {
         this.bleUiStateCallBack = bleUiStateCallBack;
     }
 
@@ -262,44 +275,44 @@ public class BaseFragment extends Fragment implements HealthApi.EcgCallBack, Hea
         startActivity(intent);
     }
 
-
     protected EcgCallBack ecgCallBack;
-    protected static interface EcgCallBack{
+
+    protected static interface EcgCallBack {
         void ecgCall(int[] data);
     }
 
-    protected void setEcgCallBack(EcgCallBack ecgCallBack){
+    protected void setEcgCallBack(EcgCallBack ecgCallBack) {
         this.ecgCallBack = ecgCallBack;
     }
 
     protected TmepCallBack tmepCallBack;
 
-    protected static interface TmepCallBack{
-        void getTmepCallBack(String data,double temData);
+    protected static interface TmepCallBack {
+        void getTmepCallBack(String data, double temData);
     }
 
-    protected void setTmepCallBack(TmepCallBack tmepCallBack){
+    protected void setTmepCallBack(TmepCallBack tmepCallBack) {
         this.tmepCallBack = tmepCallBack;
     }
 
 
     protected OxygenCallBack oxygenCallBack;
 
-    protected static interface OxygenCallBack{
+    protected static interface OxygenCallBack {
         void getOxygenCall(Message msg);
     }
 
-    protected void setOxygenCallBack(OxygenCallBack oxygenCallBack){
+    protected void setOxygenCallBack(OxygenCallBack oxygenCallBack) {
         this.oxygenCallBack = oxygenCallBack;
     }
 
     protected BloodPressureDataCallBack bloodPressureDataCallBack;
 
-    protected static interface BloodPressureDataCallBack{
+    protected static interface BloodPressureDataCallBack {
         void getBloodPressureDataCallBack(Message msg);
     }
 
-    protected void setBloodPressureDataCallBack(BloodPressureDataCallBack bloodPressureDataCallBack){
+    protected void setBloodPressureDataCallBack(BloodPressureDataCallBack bloodPressureDataCallBack) {
         this.bloodPressureDataCallBack = bloodPressureDataCallBack;
     }
 }

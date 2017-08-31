@@ -56,6 +56,11 @@ public class BloodOxygenMeasureFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (ox_button_state == START){
+            mHealthApi.stopOX();
+            ox_button_state = START;
+            btnStartMeasureOxygen.setText("开始");
+        }
         unbinder.unbind();
     }
 
@@ -114,6 +119,9 @@ public class BloodOxygenMeasureFragment extends BaseFragment {
 
                         int angle = oxyData*320/100;
                         progressViewOxygen.setAngleWithAnim(angle);
+                        final long timeData = System.currentTimeMillis();
+                        String time = timeData + "";
+                        dbManager.addBloodOxMessage(time,oxyData+"",hrData+"");
                     }
                     break;
                 case Ox_task.AXIS_DATA://血氧数据

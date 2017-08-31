@@ -63,10 +63,10 @@ public class BodyTemperatureMeasureFragment extends BaseFragment {
         if (!isStartMeasure) {
             mHealthApi.startBT();
             bt_button_state = STOP;
-            btnStartMeasureTem.setText("停止");
+            btnStartMeasureTem.setText("测量中...");
             isStartMeasure = true;
         } else {
-            btnStartMeasureTem.setText("开始");
+//            btnStartMeasureTem.setText("开始");
             isStartMeasure = false;
         }
 
@@ -77,6 +77,9 @@ public class BodyTemperatureMeasureFragment extends BaseFragment {
         @Override
         public void getTmepCallBack(String data, double temData) {
             tvTemData.setText(data);
+            final long timeData = System.currentTimeMillis();
+            String time = timeData + "";
+            dbManager.addTempMessage(time,data);
             btnStartMeasureTem.setText("开始");
             isStartMeasure = false;
             double temp = Double.valueOf(data);

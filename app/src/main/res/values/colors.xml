@@ -21,6 +21,9 @@
     <color name="progress_green">#ABFE28</color>
     <color name="progress_red">#FF0000</color>
     <color name="line_view">#DBDBDB</color>
+    <color name="tv_time_color">#6699CC</color>
+    <color name="tv_ecg_data_color">#5D5D5D</color>
+    <color name="bg_fragment">#EEEEEE</color>
 
 
 </resources>

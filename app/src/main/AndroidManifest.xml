@@ -44,7 +44,7 @@
             android:name="com.linktop.whealthService.OnBLEService"
             android:enabled="true"/>
 
-        <activity android:name=".activity.MeasureActivity"
+        <activity android:name=".activity.DataDealActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
 
