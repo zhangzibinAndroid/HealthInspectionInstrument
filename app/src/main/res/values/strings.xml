@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">大树英杰小方块</string>
+    <string name="app_name">健康监测仪</string>
     <string name="multi_functional_health_detector">多功能健康检测仪</string>
     <string name="click_connect">点此连接</string>
     <string name="home_page">首页</string>
@@ -10,7 +10,8 @@
     <string name="blood_oxygen">血氧</string>
     <string name="body_temperature">体温</string>
     <string name="back">返回</string>
-
+    <string name="leak_and_check">存在漏气，请检查气路，重新测量。</string>
+    <string name="measurement_void">测量过程中请保持安静，此次测量作废，请重新测量。</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -34,6 +34,7 @@ public abstract class MyBaseAdapter<E> extends BaseAdapter {
 	public void addAllDataToMyadapter(List<E> e){
 		list.clear();
 		list.addAll(e);//增加一个列表
+		notifyDataSetChanged();
 	}
 
 	public void addAllDataToMyadapterWithoutClean(List<E> e){

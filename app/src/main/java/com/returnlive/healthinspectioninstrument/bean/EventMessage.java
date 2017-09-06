@@ -9,6 +9,11 @@ package com.returnlive.healthinspectioninstrument.bean;
 
 public class EventMessage {
     public String message;
+    public int msg;
+
+    public EventMessage(int msg) {
+        this.msg = msg;
+    }
 
     public EventMessage(String message) {
         this.message = message;
@@ -16,5 +21,9 @@ public class EventMessage {
 
     public String getMessage() {
         return message;
+    }
+
+    public int getMsg() {
+        return msg;
     }
 }

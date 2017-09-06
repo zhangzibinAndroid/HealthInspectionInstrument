@@ -17,6 +17,7 @@ import com.returnlive.healthinspectioninstrument.utils.DataGetUtils;
 import com.returnlive.healthinspectioninstrument.view.EcgPathViewHistory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +49,7 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
     Button btnStartMeasure;
     private DbEcgBean dbEcgBean;
     private ArrayList<Integer> ecgDataList;
+    private List<ArrayList<Integer> > list = new ArrayList<>();
     private float mWidth = 0;
 
     @Override
@@ -67,15 +69,15 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
         try {
             ecgDataList = GsonParsing.getEcgJson(jsonData);
         } catch (Exception e) {
-            Log.e(TAG, "解析失败"+e.getMessage() );
+            Log.e(TAG, "解析失败" + e.getMessage());
         }
-        ecgViewHistory.addAllDATA(ecgDataList);
-        tvRrMax.setText("RR最大值："+dbEcgBean.getRr_max());
-        tvRrMin.setText("RR最小值："+dbEcgBean.getRr_min());
-        tvMood.setText("心情："+dbEcgBean.getMoods());
-        tvHeartRate.setText("心率："+dbEcgBean.getHr());
-        tvHeartRateVariability.setText("心率变异性："+dbEcgBean.getHrv());
-        tvBreathingRate.setText("呼吸率："+dbEcgBean.getBrs());
+
+        tvRrMax.setText("RR最大值：" + dbEcgBean.getRr_max());
+        tvRrMin.setText("RR最小值：" + dbEcgBean.getRr_min());
+        tvMood.setText("心情：" + dbEcgBean.getMoods());
+        tvHeartRate.setText("心率：" + dbEcgBean.getHr());
+        tvHeartRateVariability.setText("心率变异性：" + dbEcgBean.getHrv());
+        tvBreathingRate.setText("呼吸率：" + dbEcgBean.getBrs());
 
     }
 

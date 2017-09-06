@@ -16,5 +16,7 @@ public class HealthApplication extends Application {
     public void onCreate() {
         super.onCreate();
         AutoLayoutConifg.getInstance().useDeviceSize();
+        //是否打开日志，true 打开，false关闭，默认打开
+//        MonitorDataTransmissionManager.isDebug(true);
     }
 }

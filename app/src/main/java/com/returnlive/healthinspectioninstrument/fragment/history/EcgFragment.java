@@ -2,6 +2,7 @@ package com.returnlive.healthinspectioninstrument.fragment.history;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,8 @@ public class EcgFragment extends BaseFragment {
     private void initView() {
         ecgHistoryAdapter = new EcgHistoryAdapter(getActivity());
         lvEcg.setAdapter(ecgHistoryAdapter);
-        ArrayList<DbEcgBean> list = dbManager.searchEcgData();
+        final ArrayList<DbEcgBean> list = dbManager.searchEcgData();
+        Log.e(TAG, "initView: "+list );
         for (int i = list.size()-1; i >-1 ; i--) {
             DbEcgBean dbEcgBean = list.get(i);
             ecgHistoryAdapter.addDATA(dbEcgBean);

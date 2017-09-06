@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.linktop.MonitorDataTransmissionManager;
+
 /**
  * 作者： 张梓彬
  * 日期： 2017/8/11 0011
@@ -20,11 +22,12 @@ import android.widget.Toast;
 
 public class BaseActivity extends AppCompatActivity {
     private String[] permission = new String[1];
+    protected MonitorDataTransmissionManager manager;
+
     protected void setReplaceFragment(@IdRes int containerViewId, Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(containerViewId, fragment).commit();
     }
-
 
     public void initPermission(String[] permissions) {
         // 版本判断。当手机系统大于 23 时，才有必要去判断权限是否获取
@@ -98,5 +101,16 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
+
+
 
 }

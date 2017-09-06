@@ -7,19 +7,24 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.linktop.DeviceType;
+import com.linktop.MonitorDataTransmissionManager;
+import com.linktop.infs.OnBleConnectListener;
 import com.returnlive.healthinspectioninstrument.R;
 import com.returnlive.healthinspectioninstrument.base.BaseActivity;
+import com.returnlive.healthinspectioninstrument.bean.EventMessage;
 import com.returnlive.healthinspectioninstrument.fragment.menu.HistoryFragment;
 import com.returnlive.healthinspectioninstrument.fragment.menu.HomePageFragment;
 import com.returnlive.healthinspectioninstrument.fragment.menu.MineFragment;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MenuActivity extends BaseActivity {
+public class MenuActivity extends BaseActivity implements MonitorDataTransmissionManager.OnServiceBindListener, OnBleConnectListener {
 
-    private static final String TAG = "TAG";
     @BindViews({R.id.tv_home_page, R.id.tv_history, R.id.tv_mine})
     TextView[] tv_sel;
     // 要申请的权限
@@ -28,6 +33,7 @@ public class MenuActivity extends BaseActivity {
     private HistoryFragment historyFragment;
     private MineFragment mineFragment;
     private long exitTime = 0;//点击2次返回，退出程序
+    private static final String TAG = "MenuActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,8 @@ public class MenuActivity extends BaseActivity {
 
     //初始化页面
     private void initView() {
+        manager = MonitorDataTransmissionManager.getInstance();
+        manager.bind(DeviceType.HealthMonitor, this);
         homePageFragment = new HomePageFragment();
         historyFragment = new HistoryFragment();
         mineFragment = new MineFragment();
@@ -77,7 +85,6 @@ public class MenuActivity extends BaseActivity {
     }
 
 
-
     //点击两次退出
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -88,11 +95,55 @@ public class MenuActivity extends BaseActivity {
                         Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
+                manager.unBind();
                 System.exit(0);
             }
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onServiceBind() {
+        manager.setScanDevNamePrefixWhiteList(R.array.health_monitor_dev_name_prefixes);
+        manager.setOnBleConnectListener(this);
+
+    }
+
+    @Override
+    public void onServiceUnbind() {
+
+    }
+
+
+    @Override
+    public void onBLENoSupported() {
+        Toast.makeText(this, "蓝牙不支持", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onOpenBLE() {
+    }
+
+    @Override
+    public void onBleState(int bleState) {
+        EventBus.getDefault().post(new EventMessage(bleState));
+
+    }
+
+    @Override
+    public void onUpdateDialogBleList() {
+
+    }
+
+
+
+
 
 }

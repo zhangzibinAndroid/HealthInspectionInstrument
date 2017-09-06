@@ -58,10 +58,11 @@ public class EcgPathViewHistory extends EcgBackGroundView {
         float endY = 0;
         for (int i = 0; i < arrast.size(); i++) {
             endY = arrast.get(i) / 50;//按屏幕比例缩小Y轴比例
-            tmp = (float) (tmp+0.5);
+            tmp = (float) (tmp+1);
             mPath.lineTo(tmp, endY);
             mPath.moveTo(tmp, endY);
         }
+        scrollTo((int) tmp,0);
         canvas.drawPath(mPath, mPaint);
         invalidate();
     }

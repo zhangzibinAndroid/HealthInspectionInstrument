@@ -2,19 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@mipmap/mainbg"
     android:orientation="vertical"
     tools:context="com.returnlive.healthinspectioninstrument.fragment.measure.EcgMeasureFragment">
-
 
 
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/px10"
         android:paddingLeft="@dimen/px40"
-        android:paddingRight="@dimen/px40"
-        android:paddingBottom="@dimen/px10">
+        android:paddingRight="@dimen/px40">
 
         <com.zhy.autolayout.AutoFrameLayout
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 android:id="@+id/ecg_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layerType="software"/>
+                android:layerType="software" />
 
         </com.zhy.autolayout.AutoFrameLayout>
 
