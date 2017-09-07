@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.infs.OnBpResultListener;
@@ -36,7 +37,10 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
     TextView tvSystolicWarning;
     @BindView(R.id.tv_diastolic_warning)
     TextView tvDiastolicWarning;
+    @BindView(R.id.btn_start_measure_save)
+    Button btnStartMeasureSave;
     private boolean isMeasureBp = false;
+    private int sys,dia;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,6 +53,7 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
 
     private void initView() {
         tvDiastolicWarning.setVisibility(View.INVISIBLE);
+        btnStartMeasureSave.setVisibility(View.GONE);
         manager = MonitorDataTransmissionManager.getInstance();
         isMeasureBp = false;
 
@@ -63,60 +68,47 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
         unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_start_measure_tem)
-    public void onViewClicked() {
-        if (!isMeasureBp) {
-            MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BP);
-            MonitorDataTransmissionManager.getInstance().setOnBpResultListener(this);
-            btnStartMeasureTem.setText("停止");
-            tvDiastolicWarning.setVisibility(View.INVISIBLE);
-            isMeasureBp = true;
-        } else {
-            manager.stopMeasure(MeasureType.BP);
-            btnStartMeasureTem.setText("开始");
-            isMeasureBp = false;
-        }
-
-    }
 
     @Override
-    public void onBpResult(final int systolicPressure,final int diastolicPressure, int heartRate) {
+    public void onBpResult(final int systolicPressure, final int diastolicPressure, int heartRate) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                sys = systolicPressure;
+                dia = diastolicPressure;
+                btnStartMeasureSave.setVisibility(View.VISIBLE);
                 tvDiastolicWarning.setVisibility(View.VISIBLE);
                 manager.stopMeasure(MeasureType.BP);
                 isMeasureBp = false;
                 btnStartMeasureTem.setText("开始");
-                tvBloodPressureData.setText(systolicPressure+"/"+diastolicPressure);
-                if (systolicPressure<90){
-                    tvSystolicWarning.setText("收缩压："+systolicPressure+",收缩压偏低");
+                tvBloodPressureData.setText(systolicPressure + "/" + diastolicPressure);
+                if (systolicPressure < 90) {
+                    tvSystolicWarning.setText("收缩压：" + systolicPressure + ",收缩压偏低");
                     tvSystolicWarning.setTextColor(getResources().getColor(R.color.progress_orange));
                     progressViewBloodPressure.setColor(getResources().getColor(R.color.progress_orange));
-                }else if (systolicPressure>139){
-                    tvSystolicWarning.setText("收缩压："+systolicPressure+",收缩压偏高");
+                } else if (systolicPressure > 139) {
+                    tvSystolicWarning.setText("收缩压：" + systolicPressure + ",收缩压偏高");
                     tvSystolicWarning.setTextColor(getResources().getColor(R.color.progress_red));
                     progressViewBloodPressure.setColor(getResources().getColor(R.color.progress_red));
-                }else {
-                    tvSystolicWarning.setText("收缩压："+systolicPressure+",收缩压正常");
+                } else {
+                    tvSystolicWarning.setText("收缩压：" + systolicPressure + ",收缩压正常");
                     tvSystolicWarning.setTextColor(getResources().getColor(R.color.progress_green));
                     progressViewBloodPressure.setColor(getResources().getColor(R.color.progress_green));
                 }
 
-                int angle = 100*320/150;
+                int angle = 100 * 320 / 150;
                 progressViewBloodPressure.setAngleWithAnim(angle);
-                if (diastolicPressure<90){
-                    tvDiastolicWarning.setText("舒张压："+diastolicPressure+",舒张压偏低");
+                if (diastolicPressure < 90) {
+                    tvDiastolicWarning.setText("舒张压：" + diastolicPressure + ",舒张压偏低");
                     tvDiastolicWarning.setTextColor(getResources().getColor(R.color.progress_orange));
-                }else if (diastolicPressure>139){
-                    tvDiastolicWarning.setText("舒张压："+diastolicPressure+",舒张压偏高");
+                } else if (diastolicPressure > 139) {
+                    tvDiastolicWarning.setText("舒张压：" + diastolicPressure + ",舒张压偏高");
                     tvDiastolicWarning.setTextColor(getResources().getColor(R.color.progress_red));
-                }else {
-                    tvDiastolicWarning.setText("舒张压："+diastolicPressure+",舒张压正常");
+                } else {
+                    tvDiastolicWarning.setText("舒张压：" + diastolicPressure + ",舒张压正常");
                     tvDiastolicWarning.setTextColor(getResources().getColor(R.color.progress_green));
                 }
-                long time = System.currentTimeMillis();
-                dbManager.addBloodPreMessage(time+"",systolicPressure+"",""+diastolicPressure);
+
             }
         });
 
@@ -135,5 +127,35 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
 
             }
         });
+    }
+
+    @OnClick({R.id.btn_start_measure_tem, R.id.btn_start_measure_save})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_start_measure_tem:
+                btnStartMeasureSave.setVisibility(View.GONE);
+                if (!isMeasureBp) {
+                    MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BP);
+                    MonitorDataTransmissionManager.getInstance().setOnBpResultListener(this);
+                    btnStartMeasureTem.setText("停止");
+                    tvDiastolicWarning.setVisibility(View.INVISIBLE);
+                    isMeasureBp = true;
+                } else {
+                    manager.stopMeasure(MeasureType.BP);
+                    btnStartMeasureTem.setText("开始");
+                    isMeasureBp = false;
+                }
+                break;
+            case R.id.btn_start_measure_save:
+                try{
+                    long time = System.currentTimeMillis();
+                    dbManager.addBloodPreMessage(time + "", sys + "", "" + dia);
+                    Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "保存异常"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
     }
 }

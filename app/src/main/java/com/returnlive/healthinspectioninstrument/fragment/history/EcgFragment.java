@@ -49,7 +49,6 @@ public class EcgFragment extends BaseFragment {
         ecgHistoryAdapter = new EcgHistoryAdapter(getActivity());
         lvEcg.setAdapter(ecgHistoryAdapter);
         final ArrayList<DbEcgBean> list = dbManager.searchEcgData();
-        Log.e(TAG, "initView: "+list );
         for (int i = list.size()-1; i >-1 ; i--) {
             DbEcgBean dbEcgBean = list.get(i);
             ecgHistoryAdapter.addDATA(dbEcgBean);

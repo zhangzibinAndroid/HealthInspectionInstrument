@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.infs.OnBtResultListener;
@@ -36,6 +37,8 @@ public class BodyTemperatureMeasureFragment extends BaseFragment implements OnBt
     ProgressView progressView;
     @BindView(R.id.tv_tem_warning)
     TextView tvTemWarning;
+    @BindView(R.id.btn_start_measure_save)
+    Button btnStartMeasureSave;
     private boolean isMeasureTemp = false;
 
 
@@ -51,7 +54,7 @@ public class BodyTemperatureMeasureFragment extends BaseFragment implements OnBt
     private void initView() {
         isMeasureTemp = false;
         manager = MonitorDataTransmissionManager.getInstance();
-
+        btnStartMeasureSave.setVisibility(View.GONE);
     }
 
 
@@ -62,16 +65,6 @@ public class BodyTemperatureMeasureFragment extends BaseFragment implements OnBt
         unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_start_measure_tem)
-    public void onViewClicked() {
-        if (!isMeasureTemp) {
-            MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BT);
-            MonitorDataTransmissionManager.getInstance().setOnBtResultListener(this);
-            btnStartMeasureTem.setText("测量中...");
-            isMeasureTemp = true;
-        }
-    }
-
 
     @Override
     public void onBtResult(final double temData) {
@@ -79,29 +72,53 @@ public class BodyTemperatureMeasureFragment extends BaseFragment implements OnBt
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                tvTemData.setText(temData+"");
-                long time = System.currentTimeMillis();
-                dbManager.addTempMessage(time+"",temData+"");
+                btnStartMeasureSave.setVisibility(View.VISIBLE);
+                tvTemData.setText(temData + "");
+
                 manager.resetMeasureFlag();
-                btnStartMeasureTem.setText("开始");
-                if (temData<36){
-                    tvTemWarning.setText("体温：" + temData+",体温偏低");
+                btnStartMeasureTem.setText("重新开始");
+                if (temData < 36) {
+                    tvTemWarning.setText("体温：" + temData + ",体温偏低");
                     tvTemWarning.setTextColor(getResources().getColor(R.color.progress_orange));
                     progressView.setColor(getResources().getColor(R.color.progress_orange));
-                }else if (temData>37){
-                    tvTemWarning.setText("体温：" + temData+",体温偏高");
+                } else if (temData > 37) {
+                    tvTemWarning.setText("体温：" + temData + ",体温偏高");
                     tvTemWarning.setTextColor(getResources().getColor(R.color.progress_red));
                     progressView.setColor(getResources().getColor(R.color.progress_red));
 
-                }else {
-                    tvTemWarning.setText("体温：" + temData+",体温正常");
+                } else {
+                    tvTemWarning.setText("体温：" + temData + ",体温正常");
                     tvTemWarning.setTextColor(getResources().getColor(R.color.progress_green));
                     progressView.setColor(getResources().getColor(R.color.progress_green));
                 }
 
-                int angle = 37*330/45;
+                int angle = 37 * 330 / 45;
                 progressView.setAngleWithAnim(angle);
             }
         });
+    }
+
+    @OnClick({R.id.btn_start_measure_tem, R.id.btn_start_measure_save})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_start_measure_tem:
+                if (!isMeasureTemp) {
+                    btnStartMeasureSave.setVisibility(View.GONE);
+                    MonitorDataTransmissionManager.getInstance().startMeasure(MeasureType.BT);
+                    MonitorDataTransmissionManager.getInstance().setOnBtResultListener(this);
+                    btnStartMeasureTem.setText("测量中...");
+                    isMeasureTemp = true;
+                }
+                break;
+            case R.id.btn_start_measure_save:
+                try{
+                    long time = System.currentTimeMillis();
+                    dbManager.addTempMessage(time + "", tvTemData.getText().toString());
+                    Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "保存异常"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }

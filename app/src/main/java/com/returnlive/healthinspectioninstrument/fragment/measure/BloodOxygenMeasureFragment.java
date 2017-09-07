@@ -40,7 +40,10 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
     TextView tvOxygenWarning;
     @BindView(R.id.tv_hr_warning)
     TextView tvHrWarning;
+    @BindView(R.id.btn_save)
+    Button btnSave;
     private boolean isMeasureBo = false;
+    private int spo,hr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +57,7 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
     private void initView() {
         manager = MonitorDataTransmissionManager.getInstance();
         tvHrWarning.setVisibility(View.INVISIBLE);
+        btnSave.setVisibility(View.GONE);
         isMeasureBo = false;
 
     }
@@ -66,34 +70,19 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
         unbinder.unbind();
     }
 
-    @OnClick(R.id.btn_start_measure_oxygen)
-    public void onViewClicked() {
-        if (BlueDialogListFragment.isBlueConnect) {
-            if (!isMeasureBo) {
-                manager.startMeasure(MeasureType.SPO2H);
-                manager.setOnSPO2HResultListener(this);
-                tvHrWarning.setVisibility(View.INVISIBLE);
-                btnStartMeasureOxygen.setText("停止");
-                isMeasureBo = true;
-            } else {
-                manager.stopMeasure(MeasureType.SPO2H);
-                btnStartMeasureOxygen.setText("开始");
-                isMeasureBo = false;
-            }
-        } else {
-            Toast.makeText(getActivity(), "蓝牙未连接", Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onSPO2HResult(final int spo2h, final int heartRate) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                spo = spo2h;
+                hr = heartRate;
                 manager.stopMeasure(MeasureType.SPO2H);
                 isMeasureBo = false;
+                btnSave.setVisibility(View.VISIBLE);
                 tvHrWarning.setVisibility(View.VISIBLE);
-                btnStartMeasureOxygen.setText("开始");
+                btnStartMeasureOxygen.setText("重新开始");
                 tvOxygenData.setText(spo2h + "/" + heartRate);
                 if (spo2h < 95) {
                     tvOxygenWarning.setText("血氧：" + spo2h + ",血氧偏低");
@@ -109,7 +98,7 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
                     progressViewOxygen.setColor(getResources().getColor(R.color.progress_green));
                 }
 
-                int angle = 96*320/110;
+                int angle = 96 * 320 / 110;
                 progressViewOxygen.setAngleWithAnim(angle);
 
                 if (heartRate < 60) {
@@ -122,8 +111,7 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
                     tvHrWarning.setText("心率：" + spo2h + ",心率正常");
                     tvHrWarning.setTextColor(getResources().getColor(R.color.progress_green));
                 }
-                long time = System.currentTimeMillis();
-                dbManager.addBloodOxMessage(time+"",spo2h+"",heartRate+"");
+
             }
         });
 
@@ -134,5 +122,39 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
     public void onSPO2HWave(int i) {
         //血氧测量画图线数据
         runOnUiMothod(tvOxygenWarning, "正在测量：" + i);
+    }
+
+    @OnClick({R.id.btn_start_measure_oxygen, R.id.btn_save})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_start_measure_oxygen:
+                btnSave.setVisibility(View.GONE);
+                if (BlueDialogListFragment.isBlueConnect) {
+                    if (!isMeasureBo) {
+                        manager.startMeasure(MeasureType.SPO2H);
+                        manager.setOnSPO2HResultListener(this);
+                        tvHrWarning.setVisibility(View.INVISIBLE);
+                        btnStartMeasureOxygen.setText("停止");
+                        isMeasureBo = true;
+                    } else {
+                        manager.stopMeasure(MeasureType.SPO2H);
+                        btnStartMeasureOxygen.setText("开始");
+                        isMeasureBo = false;
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "蓝牙未连接", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.btn_save:
+                try{
+                    long time = System.currentTimeMillis();
+                    dbManager.addBloodOxMessage(time + "", spo + "", hr + "");
+                    Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "保存异常"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
     }
 }

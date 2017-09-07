@@ -59,4 +59,15 @@
         android:background="@drawable/btn_blue_selector"
         android:layout_marginRight="@dimen/px100"/>
 
+
+    <Button android:id="@+id/btn_start_save"
+        android:layout_width="@dimen/px200"
+        android:layout_height="@dimen/px100"
+        android:text="保存"
+        android:textSize="@dimen/px32"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:background="@drawable/btn_blue_selector"
+        android:layout_marginRight="@dimen/px100"/>
+
 </com.zhy.autolayout.AutoLinearLayout>

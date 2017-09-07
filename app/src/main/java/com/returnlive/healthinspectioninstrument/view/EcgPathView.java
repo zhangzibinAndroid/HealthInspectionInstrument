@@ -57,7 +57,7 @@ public class EcgPathView extends EcgBackGroundView {
         mPaint.setColor(mLineColor);
         float endY = 0;
         if (arrast.size() != 0) {
-            endY = arrast.get(arrast.size() - 1) / 50;//按屏幕比例缩小Y轴比例
+            endY = arrast.get(arrast.size() - 1) / 100;//按屏幕比例缩小Y轴比例
             tmp = getWidthes();
             mPath.lineTo(tmp, endY);
             mPath.moveTo(tmp, endY);

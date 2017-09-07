@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.constant.BluetoothState;
+import com.linktop.infs.OnBatteryListener;
 import com.linktop.infs.OnDeviceVersionListener;
 import com.linktop.infs.OnSPO2HResultListener;
 import com.returnlive.healthinspectioninstrument.R;
@@ -33,7 +34,7 @@ import butterknife.OnClick;
  * 时间： 上午 11:55
  * 描述： 首页
  */
-public class HomePageFragment extends BaseFragment implements OnDeviceVersionListener, OnSPO2HResultListener {
+public class HomePageFragment extends BaseFragment implements OnDeviceVersionListener, OnSPO2HResultListener, OnBatteryListener {
     private static final String TAG = "HomePageFragment";
     @BindView(R.id.tv_bluetooth_connect)
     TextView tvBluetoothConnect;
@@ -70,6 +71,7 @@ public class HomePageFragment extends BaseFragment implements OnDeviceVersionLis
                 if (!BlueDialogListFragment.isBlueConnect) {
                     showBlueDeceiveList();
                     manager.setOnDeviceVersionListener(this);
+                    manager.setOnBatteryListener(this);
                 } else {
                     manager.disConnectBle();
                     BlueDialogListFragment.isBlueConnect = false;
@@ -164,6 +166,41 @@ public class HomePageFragment extends BaseFragment implements OnDeviceVersionLis
     @Override
     public void onSPO2HWave(int i) {
         Log.e(TAG, "onSPO2HWave: " + i);
+
+    }
+
+    @Override
+    public void onBatteryCharging() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), "设备充电中，请暂勿使用设备", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onBatteryQuery(final int i) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (i<10){
+                    Toast.makeText(getActivity(), "设备电量剩余"+i+"%,请及时充电！", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(), "设备电量剩余"+i+"%！", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onBatteryFull() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getActivity(), "设备电量已充满", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 }

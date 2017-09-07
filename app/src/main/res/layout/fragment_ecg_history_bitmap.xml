@@ -20,16 +20,34 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1">
-
+<!--
             <com.returnlive.healthinspectioninstrument.view.EcgBackGroundView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />-->
+
+            <com.returnlive.healthinspectioninstrument.view.other.EcgBackgroundView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.returnlive.healthinspectioninstrument.view.EcgPathViewHistory
+            <com.returnlive.healthinspectioninstrument.view.other.ReboundHorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+                <com.returnlive.healthinspectioninstrument.view.other.EcgWaveView
+                    android:id="@+id/ecg_view_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:scrollable="true"
+                    app:waveColor="@android:color/white"
+                    app:waveStrokeWidth="1dp"/>
+            </com.returnlive.healthinspectioninstrument.view.other.ReboundHorizontalScrollView>
+
+            <!--<com.returnlive.healthinspectioninstrument.view.EcgPathViewHistory
                 android:id="@+id/ecg_view_history"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layerType="software" />
+                android:layerType="software" />-->
 
         </com.zhy.autolayout.AutoFrameLayout>
 

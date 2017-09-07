@@ -67,6 +67,7 @@ public class EcgWaveView extends View {
     private float mViewWidth;
     private float mViewHalfHeight;
     private float xS;
+    private static final String TAG = "EcgWaveView";
 
     public EcgWaveView(Context context) {
         super(context);
@@ -160,8 +161,10 @@ public class EcgWaveView extends View {
 
     public synchronized void preparePoint(int data) {
         dataList.add(data);
-        if (dataList.size() > allDataSize) dataList.remove(0);
-        postInvalidate();
+        /*if (dataList.size() > (allDataSize)) {
+            dataList.remove(0);
+        }
+        postInvalidate();*/
     }
 
     public void preparePoints(List<Integer> dataList) {
@@ -197,5 +200,9 @@ public class EcgWaveView extends View {
         allDataSize = (int) (totalLattices * dataPerLattice);
         dataSpacing = xS / dataPerLattice;//每个数据点间距。
         if (!dataList.isEmpty()) postInvalidate();
+    }
+
+    public List<Integer> getDataList() {
+        return dataList;
     }
 }

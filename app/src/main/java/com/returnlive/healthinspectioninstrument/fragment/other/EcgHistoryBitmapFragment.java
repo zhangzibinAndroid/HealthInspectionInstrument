@@ -14,7 +14,7 @@ import com.returnlive.healthinspectioninstrument.base.BaseFragment;
 import com.returnlive.healthinspectioninstrument.bean.DbEcgBean;
 import com.returnlive.healthinspectioninstrument.gson.GsonParsing;
 import com.returnlive.healthinspectioninstrument.utils.DataGetUtils;
-import com.returnlive.healthinspectioninstrument.view.EcgPathViewHistory;
+import com.returnlive.healthinspectioninstrument.view.other.EcgWaveView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
 
 
     @BindView(R.id.ecg_view_history)
-    EcgPathViewHistory ecgViewHistory;
+    EcgWaveView ecgViewHistory;
     @BindView(R.id.tv_rr_max)
     TextView tvRrMax;
     @BindView(R.id.tv_rr_min)
@@ -48,8 +48,8 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
     @BindView(R.id.btn_start_measure)
     Button btnStartMeasure;
     private DbEcgBean dbEcgBean;
-    private ArrayList<Integer> ecgDataList;
-    private List<ArrayList<Integer> > list = new ArrayList<>();
+    private List<Integer> ecgDataList;
+    private List<ArrayList<Integer>> list = new ArrayList<>();
     private float mWidth = 0;
 
     @Override
@@ -62,22 +62,28 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
     }
 
     private void initView() {
+        ecgViewHistory.setPagerSpeed(1);
+        ecgViewHistory.setCalibration(1.0f);
         mWidth = 0;
         btnStartMeasure.setVisibility(View.GONE);
         dbEcgBean = DataGetUtils.ecgBean;
         String jsonData = dbEcgBean.getJsonData();
         try {
             ecgDataList = GsonParsing.getEcgJson(jsonData);
+            Log.e(TAG, "initView: "+ecgDataList );
+            ecgViewHistory.clear();
+            ecgViewHistory.preparePoints(ecgDataList);
+
         } catch (Exception e) {
             Log.e(TAG, "解析失败" + e.getMessage());
         }
 
-        tvRrMax.setText("RR最大值：" + dbEcgBean.getRr_max());
-        tvRrMin.setText("RR最小值：" + dbEcgBean.getRr_min());
-        tvMood.setText("心情：" + dbEcgBean.getMoods());
-        tvHeartRate.setText("心率：" + dbEcgBean.getHr());
-        tvHeartRateVariability.setText("心率变异性：" + dbEcgBean.getHrv());
-        tvBreathingRate.setText("呼吸率：" + dbEcgBean.getBrs());
+        tvRrMax.setText(dbEcgBean.getRr_max());
+        tvRrMin.setText(dbEcgBean.getRr_min());
+        tvMood.setText(dbEcgBean.getMoods());
+        tvHeartRate.setText( dbEcgBean.getHr());
+        tvHeartRateVariability.setText( dbEcgBean.getHrv());
+        tvBreathingRate.setText(dbEcgBean.getBrs());
 
     }
 
@@ -86,4 +92,5 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
 }
