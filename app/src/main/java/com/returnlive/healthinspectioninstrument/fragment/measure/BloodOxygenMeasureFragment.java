@@ -102,13 +102,13 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
                 progressViewOxygen.setAngleWithAnim(angle);
 
                 if (heartRate < 60) {
-                    tvHrWarning.setText("心率：" + spo2h + ",心率偏低");
+                    tvHrWarning.setText("心率：" + heartRate + ",心率偏低");
                     tvHrWarning.setTextColor(getResources().getColor(R.color.progress_orange));
                 } else if (heartRate > 100) {
-                    tvHrWarning.setText("心率：" + spo2h + ",心率偏高");
+                    tvHrWarning.setText("心率：" + heartRate + ",心率偏高");
                     tvHrWarning.setTextColor(getResources().getColor(R.color.progress_red));
                 } else {
-                    tvHrWarning.setText("心率：" + spo2h + ",心率正常");
+                    tvHrWarning.setText("心率：" + heartRate + ",心率正常");
                     tvHrWarning.setTextColor(getResources().getColor(R.color.progress_green));
                 }
 

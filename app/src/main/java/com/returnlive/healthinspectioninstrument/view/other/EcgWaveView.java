@@ -161,10 +161,10 @@ public class EcgWaveView extends View {
 
     public synchronized void preparePoint(int data) {
         dataList.add(data);
-        /*if (dataList.size() > (allDataSize)) {
+        if (dataList.size() > (allDataSize)) {
             dataList.remove(0);
         }
-        postInvalidate();*/
+        postInvalidate();
     }
 
     public void preparePoints(List<Integer> dataList) {
