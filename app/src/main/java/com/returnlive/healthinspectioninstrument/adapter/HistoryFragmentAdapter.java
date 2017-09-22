@@ -39,4 +39,5 @@ public class HistoryFragmentAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return list.get(position);
     }
+
 }

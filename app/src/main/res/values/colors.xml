@@ -24,6 +24,11 @@
     <color name="tv_time_color">#6699CC</color>
     <color name="tv_ecg_data_color">#5D5D5D</color>
     <color name="bg_fragment">#EEEEEE</color>
-
+    <color name="blue">#398BFB</color><!--蓝色 -->
+    <color name="darkblue">#019FE9</color><!--深蓝色 -->
+    <color name="gray">#767679</color>
+    <color name="dark_register">#999999</color>
+    <color name="text_color">#686868</color>
+    <color name="blue_dep">#0075AA</color>
 
 </resources>

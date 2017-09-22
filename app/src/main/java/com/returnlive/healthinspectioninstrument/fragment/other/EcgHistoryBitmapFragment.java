@@ -43,8 +43,8 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
     TextView tvHeartRate;
     @BindView(R.id.tv_heart_rate_variability)
     TextView tvHeartRateVariability;
-    @BindView(R.id.tv_breathing_rate)
-    TextView tvBreathingRate;
+    /*@BindView(R.id.tv_breathing_rate)
+    TextView tvBreathingRate;*/
     @BindView(R.id.btn_start_measure)
     Button btnStartMeasure;
     private DbEcgBean dbEcgBean;
@@ -83,7 +83,7 @@ public class EcgHistoryBitmapFragment extends BaseFragment {
         tvMood.setText(dbEcgBean.getMoods());
         tvHeartRate.setText( dbEcgBean.getHr());
         tvHeartRateVariability.setText( dbEcgBean.getHrv());
-        tvBreathingRate.setText(dbEcgBean.getBrs());
+//        tvBreathingRate.setText(dbEcgBean.getBrs());
 
     }
 

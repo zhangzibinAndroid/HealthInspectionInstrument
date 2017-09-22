@@ -8,7 +8,7 @@
     <com.zhy.autolayout.AutoLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_weight="4"
         android:orientation="vertical">
 
         <TextView android:id="@+id/tv_rr_max"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:layout_marginRight="@dimen/px100">
+        android:layout_marginRight="@dimen/px70">
 
         <TextView android:id="@+id/tv_heart_rate"
             style="@style/text_ecg_data"
@@ -46,6 +46,7 @@
 
         <TextView android:id="@+id/tv_breathing_rate"
             style="@style/text_ecg_data"
+            android:visibility="invisible"
             android:text="呼吸率："/>
 
     </com.zhy.autolayout.AutoLinearLayout>
@@ -57,7 +58,7 @@
         android:textSize="@dimen/px32"
         android:textColor="@color/white"
         android:background="@drawable/btn_blue_selector"
-        android:layout_marginRight="@dimen/px100"/>
+        android:layout_marginRight="@dimen/px70"/>
 
 
     <Button android:id="@+id/btn_start_save"
@@ -68,6 +69,6 @@
         android:textColor="@color/white"
         android:visibility="gone"
         android:background="@drawable/btn_blue_selector"
-        android:layout_marginRight="@dimen/px100"/>
+        android:layout_marginRight="@dimen/px70"/>
 
 </com.zhy.autolayout.AutoLinearLayout>

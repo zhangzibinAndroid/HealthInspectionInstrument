@@ -70,10 +70,10 @@
                     style="@style/text_ecg_data_history"
                     android:text="心率变异性：" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/tv_breathing_rate_history"
                     style="@style/text_ecg_data_history"
-                    android:text="呼吸率：" />
+                    android:text="呼吸率：" />-->
 
             </com.zhy.autolayout.AutoLinearLayout>
         </com.zhy.autolayout.AutoLinearLayout>

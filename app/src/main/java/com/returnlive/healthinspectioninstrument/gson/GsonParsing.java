@@ -2,6 +2,8 @@ package com.returnlive.healthinspectioninstrument.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.returnlive.healthinspectioninstrument.bean.LoginBean;
+import com.returnlive.healthinspectioninstrument.bean.ReturnCode;
 
 import java.util.ArrayList;
 
@@ -14,14 +16,22 @@ import java.util.ArrayList;
 
 public class GsonParsing {
 
-
-
     public static ArrayList<Integer> getEcgJson(String json) throws Exception{
         Gson gson = new Gson();
         ArrayList<Integer> list = gson.fromJson(json, new TypeToken<ArrayList<Integer>>(){}.getType());
         return list;
     }
 
+    //短信请求错误码解析
+    public static ReturnCode sendCodeError(String json) throws Exception{
+        ReturnCode result = GsonUtils.parseJsonWithGson(json, ReturnCode.class);
+        return result;
+    }
+
+    public static LoginBean getLoginMessage(String json) throws Exception{
+        LoginBean result = GsonUtils.parseJsonWithGson(json, LoginBean.class);
+        return result;
+    }
 }
 
 

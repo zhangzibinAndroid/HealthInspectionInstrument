@@ -1,0 +1,78 @@
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FAFAFA"
+    tools:context="com.returnlive.healthinspectioninstrument.activity.RegisterActivity">
+
+    <TextView
+        android:id="@+id/toolbar"
+        android:layout_width="@dimen/px160"
+        android:layout_height="@dimen/px80"
+        android:textColor="@color/black"
+        android:drawableLeft="@drawable/ic_back"
+        android:text="@string/back"
+        android:paddingLeft="@dimen/px10"
+        android:textSize="@dimen/px35"
+        android:gravity="center"
+        android:background="@drawable/sel_back_login"/>
+
+    <EditText
+        android:id="@+id/edt_phone_register"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
+        android:layout_marginTop="@dimen/px100"
+        android:hint="@string/login_phone"
+        android:padding="@dimen/px10"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:textColorHint="@color/text_default_color"
+        android:textSize="@dimen/px30"
+        android:background="@drawable/edt_dep_cricle"/>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
+        android:layout_marginTop="@dimen/px100"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edt_write_code"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px100"
+            android:hint="@string/please_input_verification_code"
+            android:padding="@dimen/px10"
+            android:layout_weight="1"
+            android:digits="0123456789"
+            android:textColorHint="@color/text_default_color"
+            android:textSize="@dimen/px30"
+            android:background="@drawable/edt_dep_cricle"
+            android:layout_marginRight="@dimen/px30"/>
+
+        <Button android:id="@+id/btn_send_code"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/px100"
+            android:text="获取验证码"
+            android:textColor="@color/white"
+            android:textSize="@dimen/px30"
+            android:background="@drawable/shape_color_pwd2" />
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <Button android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
+        android:layout_marginTop="@dimen/px100"
+        android:background="@drawable/btn_select"
+        android:text="@string/register"
+        android:textSize="@dimen/px35"
+        android:textColor="@color/white"/>
+
+</com.zhy.autolayout.AutoLinearLayout>

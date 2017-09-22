@@ -11,6 +11,7 @@ import com.linktop.DeviceType;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.infs.OnBleConnectListener;
 import com.returnlive.healthinspectioninstrument.R;
+import com.returnlive.healthinspectioninstrument.application.HealthApplication;
 import com.returnlive.healthinspectioninstrument.base.BaseActivity;
 import com.returnlive.healthinspectioninstrument.bean.EventMessage;
 import com.returnlive.healthinspectioninstrument.fragment.menu.HistoryFragment;
@@ -18,6 +19,8 @@ import com.returnlive.healthinspectioninstrument.fragment.menu.HomePageFragment;
 import com.returnlive.healthinspectioninstrument.fragment.menu.MineFragment;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -47,6 +50,7 @@ public class MenuActivity extends BaseActivity implements MonitorDataTransmissio
 
     //初始化页面
     private void initView() {
+        EventBus.getDefault().register(this);
         manager = MonitorDataTransmissionManager.getInstance();
         manager.bind(DeviceType.HealthMonitor, this);
         homePageFragment = new HomePageFragment();
@@ -96,6 +100,7 @@ public class MenuActivity extends BaseActivity implements MonitorDataTransmissio
                 exitTime = System.currentTimeMillis();
             } else {
                 manager.unBind();
+                HealthApplication.clearActivity();
                 System.exit(0);
             }
             return true;
@@ -107,13 +112,13 @@ public class MenuActivity extends BaseActivity implements MonitorDataTransmissio
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
     public void onServiceBind() {
         manager.setScanDevNamePrefixWhiteList(R.array.health_monitor_dev_name_prefixes);
         manager.setOnBleConnectListener(this);
-
     }
 
     @Override
@@ -143,6 +148,15 @@ public class MenuActivity extends BaseActivity implements MonitorDataTransmissio
     }
 
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getMessage(EventMessage eventMessage) {
+        switch (eventMessage.getMessage()){
+            case "exit":
+                finish();
+                break;
+        }
+
+    }
 
 
 

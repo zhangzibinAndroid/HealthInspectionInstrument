@@ -41,14 +41,14 @@ public class EcgHistoryAdapter extends MyBaseAdapter<DbEcgBean> {
             viewHolder = (ViewHolder) view.getTag();
         }
         DbEcgBean dbEcgBean = list.get(position);
-        String date =new  SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss").format(new Date(Long.valueOf(dbEcgBean.getTime())));
+        String date =new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(Long.valueOf(dbEcgBean.getTime())));
         viewHolder.tvTime.setText(date);
         viewHolder.tvRrMaxHistory.setText(dbEcgBean.getRr_max());
         viewHolder.tvRrMinHistory.setText(dbEcgBean.getRr_min());
         viewHolder.tvMoodHistory.setText(dbEcgBean.getMoods());
         viewHolder.tvHeartRateHistory.setText(dbEcgBean.getHr());
         viewHolder.tvHeartRateVariabilityHistory.setText(dbEcgBean.getHrv());
-        viewHolder.tvBreathingRateHistory.setText(dbEcgBean.getBrs());
+//        viewHolder.tvBreathingRateHistory.setText(dbEcgBean.getBrs());
         return view;
     }
 
@@ -65,8 +65,8 @@ public class EcgHistoryAdapter extends MyBaseAdapter<DbEcgBean> {
         TextView tvHeartRateHistory;
         @BindView(R.id.tv_heart_rate_variability_history)
         TextView tvHeartRateVariabilityHistory;
-        @BindView(R.id.tv_breathing_rate_history)
-        TextView tvBreathingRateHistory;
+       /* @BindView(R.id.tv_breathing_rate_history)
+        TextView tvBreathingRateHistory;*/
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

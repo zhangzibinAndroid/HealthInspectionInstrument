@@ -1,5 +1,6 @@
 package com.returnlive.healthinspectioninstrument.base;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.IdRes;
@@ -12,6 +13,18 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.linktop.MonitorDataTransmissionManager;
+import com.returnlive.dialoglibrary.IOSLoadingDialog;
+import com.returnlive.healthinspectioninstrument.bean.ReturnCode;
+
+import static com.returnlive.healthinspectioninstrument.constant.Code.DATA_EMPTY;
+import static com.returnlive.healthinspectioninstrument.constant.Code.DATA_UPLOADING_FAILURE;
+import static com.returnlive.healthinspectioninstrument.constant.Code.MID_NOTEXIT;
+import static com.returnlive.healthinspectioninstrument.constant.Code.PHONE_CODE;
+import static com.returnlive.healthinspectioninstrument.constant.Code.PHONE_ERROR;
+import static com.returnlive.healthinspectioninstrument.constant.Code.PHONE_HAVE;
+import static com.returnlive.healthinspectioninstrument.constant.Code.SENDCODE_ERROR;
+import static com.returnlive.healthinspectioninstrument.constant.Code.UID_NOTEXIT;
+import static com.returnlive.healthinspectioninstrument.constant.Code.USER_NOTEXIT;
 
 /**
  * 作者： 张梓彬
@@ -23,6 +36,13 @@ import com.linktop.MonitorDataTransmissionManager;
 public class BaseActivity extends AppCompatActivity {
     private String[] permission = new String[1];
     protected MonitorDataTransmissionManager manager;
+    protected IOSLoadingDialog iosLoadingDialog;
+    protected ReturnCode returnCode;
+
+    protected void JumpActivity(Class<?> cls) {
+        Intent intent = new Intent(getApplicationContext(), cls);
+        startActivity(intent);
+    }
 
     protected void setReplaceFragment(@IdRes int containerViewId, Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
@@ -104,12 +124,60 @@ public class BaseActivity extends AppCompatActivity {
 
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+  protected void showIOSLodingDialog(String hintMsg){
+      iosLoadingDialog = new IOSLoadingDialog().setOnTouchOutside(true);
+      iosLoadingDialog.setOnTouchOutside(false);
+      iosLoadingDialog.setHintMsg(hintMsg);
+      iosLoadingDialog.show(getFragmentManager(), "iosLoadingDialog");
+  }
+
+  protected void dismissIOSDialog(){
+      if (iosLoadingDialog!=null){
+          iosLoadingDialog.dismiss();
+      }
+  }
+
+    protected void runOnUiToast(final String text){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
+    protected void getCodeStatus(int code){
+        switch (code){
+            case PHONE_CODE:
+                runOnUiToast("请输入正确电话");
+                break;
+            case PHONE_HAVE:
+                runOnUiToast("电话以存在请直接登录");
+                break;
+            case PHONE_ERROR:
+                runOnUiToast("短信码获取失败");
+                break;
+            case SENDCODE_ERROR:
+                runOnUiToast("短信码错误");
+                break;
+            case USER_NOTEXIT:
+                runOnUiToast("用户不存在");
+                break;
+            case MID_NOTEXIT:
+                runOnUiToast("m_id不可为空");
+                break;
+            case UID_NOTEXIT:
+                runOnUiToast("uid不可为空");
+                break;
+            case DATA_EMPTY:
+                runOnUiToast("数据不可为空");
+                break;
+            case DATA_UPLOADING_FAILURE:
+                runOnUiToast("数据上传失败");
+                break;
+        }
+    }
 
 
 

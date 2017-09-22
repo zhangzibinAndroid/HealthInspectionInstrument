@@ -2,6 +2,9 @@ package com.returnlive.healthinspectioninstrument.fragment.measure;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +12,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.infs.OnSPO2HResultListener;
 import com.linktop.whealthService.MeasureType;
 import com.returnlive.healthinspectioninstrument.R;
 import com.returnlive.healthinspectioninstrument.base.BaseFragment;
+import com.returnlive.healthinspectioninstrument.bean.health_updata.bo.OxygenMeasuredData;
+import com.returnlive.healthinspectioninstrument.bean.health_updata.ecg_bean.DetectItem;
+import com.returnlive.healthinspectioninstrument.constant.Code;
 import com.returnlive.healthinspectioninstrument.fragment.other.BlueDialogListFragment;
+import com.returnlive.healthinspectioninstrument.gson.GsonParsing;
 import com.returnlive.healthinspectioninstrument.view.ProgressView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.returnlive.healthinspectioninstrument.constant.InstanceUrl.UP_DATA_HEALTH;
 
 /**
  * 作者： 张梓彬
@@ -43,7 +56,9 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
     @BindView(R.id.btn_save)
     Button btnSave;
     private boolean isMeasureBo = false;
-    private int spo,hr;
+    private int spo, hr;
+    private OxygenMeasuredData oxygenMeasuredData;
+    private Gson gson;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,6 +70,8 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
     }
 
     private void initView() {
+        gson = new Gson();
+        oxygenMeasuredData = new OxygenMeasuredData();
         manager = MonitorDataTransmissionManager.getInstance();
         tvHrWarning.setVisibility(View.INVISIBLE);
         btnSave.setVisibility(View.GONE);
@@ -78,6 +95,19 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
             public void run() {
                 spo = spo2h;
                 hr = heartRate;
+
+                //血氧
+                DetectItem oxygenItem = new DetectItem();
+                oxygenItem.setValue(Float.valueOf(spo));
+                oxygenItem.setUnit("");
+                oxygenMeasuredData.setOxygen(oxygenItem);
+
+                //心率
+                DetectItem heartRateItem = new DetectItem();
+                heartRateItem.setValue(Float.valueOf(hr));
+                heartRateItem.setUnit("");
+                oxygenMeasuredData.setHeartRate(heartRateItem);
+
                 manager.stopMeasure(MeasureType.SPO2H);
                 isMeasureBo = false;
                 btnSave.setVisibility(View.VISIBLE);
@@ -146,15 +176,70 @@ public class BloodOxygenMeasureFragment extends BaseFragment implements OnSPO2HR
                 }
                 break;
             case R.id.btn_save:
-                try{
+                try {
                     long time = System.currentTimeMillis();
                     dbManager.addBloodOxMessage(time + "", spo + "", hr + "");
-                    Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
-                }catch (Exception e){
-                    Toast.makeText(getActivity(), "保存异常"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            boInterface();
+                        }
+                    }).start();
+                } catch (Exception e) {
+                    dismissIOSDialog();
+                    Toast.makeText(getActivity(), "保存异常" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 break;
         }
     }
+
+    private void boInterface() {
+        OkHttpUtils.post().url(UP_DATA_HEALTH + midUrl)
+                .addParams("data", gson.toJson(oxygenMeasuredData))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismissIOSDialog();
+                                Toast.makeText(getActivity(), getResources().getString(R.string.net_error), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Message msg = new Message();
+                        msg.obj = response;
+                        boHandler.sendMessage(msg);
+                    }
+                });
+    }
+
+
+    private Handler boHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = (String) msg.obj;
+            if (result.indexOf(Code.SUCCESS) > 0) {
+                dismissIOSDialog();
+                btnStartMeasureOxygen.setText("开始");
+                btnSave.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+            }else {
+                dismissIOSDialog();
+                try {
+                    returnCode = GsonParsing.sendCodeError(result);
+                } catch (Exception e) {
+                    Log.e(TAG, "血氧异常: " + e.getMessage());
+                }
+                getCodeStatus(returnCode.getCode());
+            }
+
+        }
+    };
 }

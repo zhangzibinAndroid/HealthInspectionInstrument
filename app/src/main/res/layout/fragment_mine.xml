@@ -1,12 +1,63 @@
-<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.autolayout.AutoRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:background="@color/bg_fragment"
     tools:context="com.returnlive.healthinspectioninstrument.fragment.menu.MineFragment">
 
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
+    <ImageView
+        android:layout_width="@dimen/px300"
+        android:layout_height="@dimen/px300"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/px100"
+        android:src="@mipmap/round_ic" />
 
-</com.zhy.autolayout.AutoLinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/px50"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textColor="@color/tv_ecg_data_color"
+        android:textSize="@dimen/px45" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100"
+        android:layout_marginTop="@dimen/px100"
+        android:background="@drawable/sel_text_homepage"
+        android:gravity="center"
+        android:text="当前用户"
+        android:textColor="@color/tv_ecg_data_color"
+        android:textSize="@dimen/px35" />
+
+    <TextView
+        android:id="@+id/tv_user_phone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100"
+        android:background="@drawable/sel_text_homepage"
+        android:gravity="center"
+        android:text="13771853364"
+        android:textColor="@color/tv_ecg_data_color"
+        android:textSize="@dimen/px35" />
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <Button android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px100"
+        android:layout_alignParentBottom="true"
+        android:text="退出登录"
+        android:layout_marginLeft="@dimen/px30"
+        android:layout_marginRight="@dimen/px30"
+        android:layout_marginBottom="@dimen/px30"/>
+
+</com.zhy.autolayout.AutoRelativeLayout>

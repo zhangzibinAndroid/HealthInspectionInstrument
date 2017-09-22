@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="horizontal"
+    tools:context="com.returnlive.dialoglibrary.sample.SampleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_clear_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="清空消息列表" />
+
+        <Button
+            android:id="@+id/btn_send_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="发送" />
+
+        <Button
+            android:id="@+id/btn_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="列表" />
+
+        <Button
+            android:id="@+id/btn_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退出" />
+
+        <Button
+            android:id="@+id/btn_tongzhi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="通知" />
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_loading_android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="安卓普通加载框" />
+
+        <Button
+            android:id="@+id/btn_loading_ios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="仿ios加载框" />
+
+        <Button
+            android:id="@+id/btn_prompt_ios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="仿ios提示框" />
+
+        <Button
+            android:id="@+id/btn_prompt_one_ios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="仿ios单个提示框" />
+
+        <Button
+            android:id="@+id/btn_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="仿ios拍照选取相册" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

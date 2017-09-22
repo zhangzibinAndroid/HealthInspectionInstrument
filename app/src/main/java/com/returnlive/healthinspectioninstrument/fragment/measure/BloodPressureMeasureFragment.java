@@ -2,6 +2,9 @@ package com.returnlive.healthinspectioninstrument.fragment.measure;
 
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +12,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.linktop.MonitorDataTransmissionManager;
 import com.linktop.infs.OnBpResultListener;
 import com.linktop.whealthService.MeasureType;
 import com.returnlive.healthinspectioninstrument.R;
 import com.returnlive.healthinspectioninstrument.base.BaseFragment;
+import com.returnlive.healthinspectioninstrument.bean.health_updata.bp.BloodPressureMeasuredData;
+import com.returnlive.healthinspectioninstrument.bean.health_updata.ecg_bean.DetectItem;
+import com.returnlive.healthinspectioninstrument.constant.Code;
+import com.returnlive.healthinspectioninstrument.gson.GsonParsing;
 import com.returnlive.healthinspectioninstrument.view.ProgressView;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
+
+import static com.returnlive.healthinspectioninstrument.constant.InstanceUrl.UP_DATA_HEALTH;
 
 /**
  * 作者： 张梓彬
@@ -40,7 +53,9 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
     @BindView(R.id.btn_start_measure_save)
     Button btnStartMeasureSave;
     private boolean isMeasureBp = false;
-    private int sys,dia;
+    private int sys, dia;
+    private BloodPressureMeasuredData bloodPressureMeasuredData;
+    private Gson gson;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +67,8 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
     }
 
     private void initView() {
+        gson = new Gson();
+        bloodPressureMeasuredData = new BloodPressureMeasuredData();
         tvDiastolicWarning.setVisibility(View.INVISIBLE);
         btnStartMeasureSave.setVisibility(View.GONE);
         manager = MonitorDataTransmissionManager.getInstance();
@@ -76,6 +93,17 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
             public void run() {
                 sys = systolicPressure;
                 dia = diastolicPressure;
+                //高压
+                DetectItem highPressureItem = new DetectItem();
+                highPressureItem.setValue(Float.valueOf(sys));
+                highPressureItem.setUnit("mmHg");
+                bloodPressureMeasuredData.setHighPressure(highPressureItem);
+
+                //低压
+                DetectItem lowPressureItem = new DetectItem();
+                lowPressureItem.setValue(Float.valueOf(dia));
+                lowPressureItem.setUnit("mmHg");
+                bloodPressureMeasuredData.setLowPressure(lowPressureItem);
                 btnStartMeasureSave.setVisibility(View.VISIBLE);
                 tvDiastolicWarning.setVisibility(View.VISIBLE);
                 manager.stopMeasure(MeasureType.BP);
@@ -147,15 +175,72 @@ public class BloodPressureMeasureFragment extends BaseFragment implements OnBpRe
                 }
                 break;
             case R.id.btn_start_measure_save:
-                try{
+                showIOSLodingDialog("正在保存...");
+
+                try {
                     long time = System.currentTimeMillis();
                     dbManager.addBloodPreMessage(time + "", sys + "", "" + dia);
-                    Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
-                }catch (Exception e){
-                    Toast.makeText(getActivity(), "保存异常"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            bpInterface();
+                        }
+                    }).start();
+
+                } catch (Exception e) {
+                    dismissIOSDialog();
+                    Toast.makeText(getActivity(), "保存异常" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
                 break;
         }
     }
+
+    private void bpInterface() {
+        OkHttpUtils.post().url(UP_DATA_HEALTH + midUrl)
+                .addParams("data", gson.toJson(bloodPressureMeasuredData))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                dismissIOSDialog();
+                                Toast.makeText(getActivity(), getResources().getString(R.string.net_error), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Message msg = new Message();
+                        msg.obj = response;
+                        bpHandler.sendMessage(msg);
+                    }
+                });
+    }
+
+    private Handler bpHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String result = (String) msg.obj;
+            if (result.indexOf(Code.SUCCESS) > 0) {
+                dismissIOSDialog();
+                btnStartMeasureTem.setText("开始");
+                btnStartMeasureSave.setVisibility(View.GONE);
+                Toast.makeText(getActivity(), getResources().getString(R.string.save_success), Toast.LENGTH_SHORT).show();
+            }else {
+                dismissIOSDialog();
+                try {
+                    returnCode = GsonParsing.sendCodeError(result);
+                } catch (Exception e) {
+                    Log.e(TAG, "血压异常: " + e.getMessage());
+                }
+                getCodeStatus(returnCode.getCode());
+            }
+        }
+    };
 }

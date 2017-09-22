@@ -47,7 +47,7 @@
         <item name="android:layout_marginLeft">@dimen/px10</item>
         <item name="android:layout_marginRight">@dimen/px10</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:textSize">@dimen/px32</item>
+        <item name="android:textSize">@dimen/px40</item>
     </style>
 
     <style name="text_ecg_data">
